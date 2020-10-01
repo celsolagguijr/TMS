@@ -6,9 +6,12 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
 
     static associate(models) {
+
       this.hasMany(models.Document,{
-        onDelete : "restrict"
+        onDelete: 'RESTRICT'
       });
+
+      this.belongsToMany(models.Document,{through : models.Transaction});
     }
   };
   User.init({
