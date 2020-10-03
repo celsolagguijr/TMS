@@ -1,11 +1,16 @@
 'use strict';
 
 const Sequelize = require("sequelize");
+const config = require("../config/config");
 
-const sequelize = new Sequelize('sampleDB', 'root', '', {
-    host: '127.0.0.1',
-    dialect: 'mysql'
-});
+const sequelize = new Sequelize(
+    config.development.database, 
+    config.development.username, 
+    config.development.password, {
+        host: config.development.host,
+        dialect: config.development.dialect
+    }
+);
 
 const test=async()=>  {
     try {
