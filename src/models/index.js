@@ -1,10 +1,11 @@
 'use strict';
 
-const sequelize      = require('./sequelize');
-const Document       = require("./document");
-const DocumentType   = require("./documenttype");
-const User           = require("./user");
-const Transaction    = require("./transaction");  
+const {sequelize , testConnection }     = require('./sequelize');
+
+const Document = require('./document');
+const DocumentType = require("./documenttype");
+const Transaction = require("./transaction");
+const User = require("./user");
 
 //Document
 Document.belongsTo(User);
@@ -18,8 +19,10 @@ DocumentType.hasOne(Document,{ onDelete: 'RESTRICT' });
 User.hasMany(Document,{ onDelete: 'RESTRICT' });
 User.belongsToMany(Document,{through : Transaction});
 
+
 module.exports = {
   sequelize,
+  testConnection,
   Document,
   DocumentType,
   User,        

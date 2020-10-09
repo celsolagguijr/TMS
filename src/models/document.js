@@ -1,18 +1,13 @@
 'use strict';
+const { Model, DataTypes , sequelize } = require('./sequelize');
 
-const {sequelize , DataTypes} = require('./sequelize');
+  class Document extends Model {};
+  Document.init({
+    title: DataTypes.STRING,
+    description: DataTypes.STRING,
+  }, {
+    sequelize,
+    modelName: 'Document',
+  });
 
-const {STRING} = DataTypes;
-
-const Document = sequelize.define("Document",{
-  title: STRING(50),
-  description: STRING(150)
-});
-
-module.exports = Document;
-
-
-
-
-
-
+  module.exports = Document;

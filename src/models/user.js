@@ -1,14 +1,19 @@
 'use strict';
+const { Model, DataTypes , sequelize } = require('./sequelize');
 
-const {sequelize , DataTypes} = require('./sequelize');
+  class User extends Model {};
 
-const {STRING} = DataTypes;
+  const {STRING} = DataTypes;
+  
+  User.init({
+    fullName: STRING,
+    userName: STRING,
+    password: STRING
+  }, {
+    sequelize,
+    modelName: 'User',
+  });
 
-const User = sequelize.define("User",{
-  fullName: STRING(50),
-  userName: STRING(30),
-  password: STRING(30)
-});
+ 
 
-
-module.exports = User;
+  module.exports = User;

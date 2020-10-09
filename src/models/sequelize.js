@@ -1,6 +1,7 @@
 'use strict';
 
-const { Sequelize , DataTypes }  = require("sequelize");
+const {Sequelize,DataTypes,Model} = require("sequelize");
+require('dotenv').config({path : "../../.env"});
 const config = require("../config/config");
 
 const sequelize = new Sequelize(
@@ -21,4 +22,5 @@ const testConnection =async()=>  {
       }
 }
 
-module.exports = {sequelize , testConnection , DataTypes};
+
+ module.exports = {sequelize , testConnection, DataTypes, Model};
