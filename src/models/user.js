@@ -1,29 +1,14 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
 
-    static associate(models) {
+const {sequelize , DataTypes} = require('./sequelize');
 
-      this.hasMany(models.Document,{
-        onDelete: 'RESTRICT'
-      });
+const {STRING} = DataTypes;
 
-      this.belongsToMany(models.Document,{through : models.Transaction});
-    }
-  };
-  User.init({
-    fullName: DataTypes.STRING,
-    userName: DataTypes.STRING,
-    password: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'User',
-  });
+const User = sequelize.define("User",{
+  fullName: STRING(50),
+  userName: STRING(30),
+  password: STRING(30)
+});
 
- 
 
-  return User;
-};
+module.exports = User;

@@ -1,6 +1,6 @@
 'use strict';
 
-const Sequelize = require("sequelize");
+const { Sequelize , DataTypes }  = require("sequelize");
 const config = require("../config/config");
 
 const sequelize = new Sequelize(
@@ -12,7 +12,7 @@ const sequelize = new Sequelize(
     }
 );
 
-const test=async()=>  {
+const testConnection =async()=>  {
     try {
         await sequelize.authenticate();
         console.log('Connection has been established successfully.');
@@ -21,4 +21,4 @@ const test=async()=>  {
       }
 }
 
-module.exports = {sequelize , test};
+module.exports = {sequelize , testConnection , DataTypes};

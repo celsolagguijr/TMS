@@ -1,26 +1,12 @@
 'use strict';
 
-const { Model } = require('sequelize');
+const {sequelize , DataTypes} = require('./sequelize');
 
-module.exports = (sequelize, DataTypes) => {
-  class DocumentType extends Model {
+const {STRING} = DataTypes;
 
-    static associate(models) { 
-
-      this.hasOne(models.Document,{
-        onDelete: 'RESTRICT'
-      });
-      
-    }
-  };
-  DocumentType.init({
-    description: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'DocumentType',
-  });
+const DocumentType = sequelize.define("DocumentType",{
+  description: STRING(15)
+});
 
 
-
-  return DocumentType;
-};
+module.exports = DocumentType;

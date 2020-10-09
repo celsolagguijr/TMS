@@ -1,31 +1,18 @@
 'use strict';
-const { Model } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class Document extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
 
-      this.belongsTo(models.User);
+const {sequelize , DataTypes} = require('./sequelize');
 
-      this.belongsTo(models.DocumentType);
+const {STRING} = DataTypes;
 
-      this.belongsToMany(models.Users,{through : models.Transaction});
+const Document = sequelize.define("Document",{
+  title: STRING(50),
+  description: STRING(150)
+});
 
-    }
-  };
-  Document.init({
-    title: DataTypes.STRING,
-    description: DataTypes.STRING,
-    createdBy: DataTypes.INTEGER,
-    documentTypeId: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'Document',
-  });
+module.exports = Document;
 
-  return Document;
-};
+
+
+
+
+
