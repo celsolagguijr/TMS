@@ -1,11 +1,11 @@
 'use strict';
 
-const {sequelize , testConnection }     = require('./sequelize');
+const { sequelize , testConnection } = require('./sequelize');
 
-const Document = require('./document');
+const Document     = require('./document');
 const DocumentType = require("./documenttype");
-const Transaction = require("./transaction");
-const User = require("./user");
+const Transaction  = require("./transaction");
+const User         = require("./user");
 
 //Document
 Document.belongsTo(User);

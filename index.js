@@ -12,11 +12,15 @@ const cookieParser = require('cookie-parser')
 //file middleware
 const fileMiddleware = require('./src/middlewares/fileMiddleware');
 
-//database connection
-const connection = require("./src/database/connection");
 
 //body parser
 const bodyParser = require('body-parser');
+
+
+//userRouter
+const userRouter = require('./src/routers/UserRouter');
+
+
 
 //file middleware
 app.use(fileMiddleware);
@@ -35,6 +39,8 @@ app.use(bodyParser.json())
 // //middleware for json parser
 // app.use(express.json());
 
+//user api
+app.use("/api/",userRouter);
 
 
 
