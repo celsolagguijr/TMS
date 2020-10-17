@@ -4,4 +4,10 @@ const fileRequestErrorHandler = (err,req,res,next) =>{
     return;
 }
 
-module.exports = { fileRequestErrorHandler };
+
+const errorOccured = (status) =>{
+    const statusCodes = [400,409,415];
+    return statusCodes.includes(status) ? true : false;
+}
+
+module.exports = { fileRequestErrorHandler , errorOccured };
