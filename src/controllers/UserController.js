@@ -1,12 +1,20 @@
 const { User } = require('../models/index');
 const { generateToken } = require("../functions/jwt");
 
-const {hashPassword , checkPassword} =require("../functions/bcrypt");
+const {checkPassword} =require("../functions/bcrypt");
+
 
 class UserController {
     
     constructor(data) {
         this.data = data;
+    }
+
+    async showAll(){
+
+        const users = await User.findAll({ attributes: { exclude: ['password'] } });
+
+        return { status : 200 , users }
     }
 
 
@@ -76,6 +84,45 @@ class UserController {
 
 
         return { status : 200 , message : "Successfully Login" , token };
+    }
+
+
+    async edit (){
+
+        const user = await User.findOne({
+            attributes : ['id'],
+            where      : { userName : this.data.userName }
+        });
+
+        if(user){
+
+            if(user.id != this.data.id)
+                return { status : 403 , message : "Username is already taken!" }
+
+        }
+
+
+        try {
+
+            const result = await User.update(
+                { 
+                    fullName : this.data.fullName,
+                    userName : this.data.userName
+                }, 
+                {
+                    where: {
+                        id : this.data.id
+                    }
+                });
+
+            
+            return { status : 200 , message : "Successfully Changed!" , data : this.data }
+
+            
+        } catch (error) {
+            return { status : 400 , error }
+        }
+
     }
 
 }

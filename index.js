@@ -29,15 +29,12 @@ app.use(fileMiddleware);
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
-// parse application/json
-app.use(bodyParser.json())
-
 
 // //middleware for cookie parser
 // app.use(cookieParser());
 
 // //middleware for json parser
-// app.use(express.json());
+app.use(express.json());
 
 //user api
 app.use("/api/",userRouter);
@@ -46,4 +43,4 @@ app.use("/api/",userRouter);
 
 
 // console.log(connection.test());
-app.listen(process.env.PORT, () => console.log(portToListen) );
+app.listen(portToListen, () => console.log("Listening on port : " + portToListen) );
