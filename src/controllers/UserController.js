@@ -46,7 +46,6 @@ class UserController {
         if(!result) return { status : 400 , message : "Something went wrong Please contact your support" };
 
         //get TOKEN after saving into database
-       
         const access_token = await generateAccessToken({
             id : result.id,
             userName : result.userName,

@@ -21,7 +21,6 @@ verifyRefreshToken = async (token) =>{
 
 
 
-
 checkToken = async (req,res,next) => {
 
     const bearerHeader = req.headers['authorization'];
@@ -35,12 +34,7 @@ checkToken = async (req,res,next) => {
 
             const token = await verifyAccessToken(accessToken);
 
-            req.access_token = accessToken;
-
-            console.log("hahah")
-
-            res.set("Access-Control-Request-Headers", 'x-access-token');
-            res.set("x-access-token", accessToken);
+            req.payload = token.payload;
 
         } catch (error) {
 
@@ -55,17 +49,20 @@ checkToken = async (req,res,next) => {
                 });
                 
                  const newAccessToken = await generateAccessToken (user);
-                
-                req.access_token = newAccessToken;
+                 
+                 const tokenPayload = await verifyAccessToken(newAccessToken);
 
-                res.set("Access-Control-Request-Headers", 'x-access-token');
-                res.set("x-access-token", newAccessToken);
+                req.payload = tokenPayload.payload;
+                
+                res.set("Access-Control-Request-Headers", 'x-new-access-token');
+
+                res.set("x-new-access-token'", newAccessToken);
 
             } catch (error) {
 
                 res.status(403).json({
                     status : 403,
-                    message : "Forbidden",
+                    message : "Unauthorize",
                     error 
                 });
             }
@@ -75,7 +72,7 @@ checkToken = async (req,res,next) => {
        next();
 
     }else{
-        res.json({status : 403, message : "Forbidden"});
+        res.json({status : 403, message : "Unauthorize"});
     }
 }
 

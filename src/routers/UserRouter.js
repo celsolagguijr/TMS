@@ -3,7 +3,6 @@ const router = express.Router();
 const UserController = require("../controllers/UserController");
 const Joi = require("@hapi/joi");
 const {checkToken} = require('../functions/jwt');
-// const { route } = require("../middlewares/fileMiddleware");
 
 
 router.route("/users")
@@ -13,9 +12,9 @@ router.route("/users")
 
             const data = await user.showAll();
 
-            res.status(data.status).json({ status : data.status, data : data.users, token : req.access_token });
+            res.status(data.status).json({ status : data.status, data : data.users, payload : req.payload });
 
-    })
+    });
 
 
 router.route("/user/:id")
@@ -32,8 +31,7 @@ router.route("/user/:id")
                 username : data.user.userName,
                 fullname : data.user.fullName,
             },
-            access_token : req.access_token
-        
+            payload : req.payload
         });
     });
 
@@ -58,7 +56,6 @@ router.route("/user/login")
 
         res.status(result.status).json(result);
 
-
     });
 
 
@@ -69,7 +66,7 @@ router.route("/user/edit")
 
         const result = await user.edit();
 
-        res.status(result.status).json({result , token : req.access_token});
+        res.status(result.status).json({result , payload : req.payload});
 
     });
 
@@ -77,17 +74,13 @@ router.route("/user/edit")
 router.route("/user/change-password")
     .put([checkToken,validateChangePassword],async (req,res)=>{
 
-
         const user = new UserController(req.body);
 
         const result = await user.changePassword();
 
-        res.status(result.status).json({result , token : req.token});
-
+        res.status(result.status).json({result , payload : req.payload});
 
     });
-
-
 
 
 
