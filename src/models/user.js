@@ -33,7 +33,6 @@ const { hashPassword } = require("../functions/bcrypt");
 
 
   User.beforeCreate(async (user, options) => {
-
     const hashedPassword = await hashPassword(user.password);
     user.password = hashedPassword;
   });

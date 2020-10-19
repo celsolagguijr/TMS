@@ -1,7 +1,6 @@
 const { User } = require('../models/index');
-const { generateToken } = require("../functions/jwt");
-
-const {checkPassword} =require("../functions/bcrypt");
+const { generateAccessToken , generateRefrehToken } = require("../functions/jwt");
+const { hashPassword ,checkPassword} =require("../functions/bcrypt");
 
 
 class UserController {
@@ -25,7 +24,7 @@ class UserController {
             where      : { id : this.data.id }
         });
 
-        return {status : 200 , user};
+        return await {status : 200 , user};
     }
 
     async create(){
@@ -48,15 +47,20 @@ class UserController {
 
         //get TOKEN after saving into database
        
-        const token = await generateToken({
+        const access_token = await generateAccessToken({
             id : result.id,
             userName : result.userName,
             fullName : result.fullName
         });
 
+
+        const refresh_token = await generateRefrehToken({
+            id : result.id
+        });
+
         
         //return success message
-        return { status : 201 , message : "Successfully Saved" , token };
+        return { status : 201 , message : "Successfully Saved" , access_token , refresh_token };
 
     }
 
@@ -76,14 +80,19 @@ class UserController {
             return { status :400  , message : "Incorrect Credentials"};
         }
 
-        const token = await generateToken({
-            id       : user.id,
+        const access_token = await generateAccessToken({
+            id : user.id,
             userName : user.userName,
             fullName : user.fullName
         });
 
 
-        return { status : 200 , message : "Successfully Login" , token };
+        const refresh_token = await generateRefrehToken({
+            id : user.id
+        });
+
+
+        return { status : 200 , message : "Successfully Login" , access_token ,  refresh_token };
     }
 
 
@@ -123,6 +132,42 @@ class UserController {
             return { status : 400 , error }
         }
 
+    }
+
+
+    async changePassword(){
+
+
+        const user = await User.findOne({
+            attributes : ['password'],
+            where      : { id : this.data.id }
+        })
+
+
+        if(!await checkPassword(this.data.currentPassword,user.password)){
+            return { status :400  , message : "Incorrect Password"};
+        }
+
+
+        try {
+
+            const result = await User.update(
+                { 
+                    password : await hashPassword(this.data.newPassword),
+                }, 
+                {
+                    where: {
+                        id : this.data.id
+                    }
+                });
+
+            
+            return { status : 200 , message : "Password successfully changed!" }
+
+            
+        } catch (error) {
+            return { status : 400 , error }
+        }
     }
 
 }

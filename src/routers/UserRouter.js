@@ -2,65 +2,39 @@ const express = require("express");
 const router = express.Router();
 const UserController = require("../controllers/UserController");
 const Joi = require("@hapi/joi");
-const {checkToken , verifyToken} = require('../functions/jwt');
+const {checkToken} = require('../functions/jwt');
 // const { route } = require("../middlewares/fileMiddleware");
 
 
 router.route("/users")
     .get(checkToken , async (req,res) => {
 
-        try {
-
-            const token = await verifyToken(req.token);
-
             const user = new UserController(req.params);
 
             const data = await user.showAll();
 
-            res.status(data.status).json({ status : data.status, data : data.users, token });
+            res.status(data.status).json({ status : data.status, data : data.users, token : req.access_token });
 
-        } catch (error) {
-            res.status(403).json({
-                status : 403,
-                message : "Forbidden",
-                error 
-            });
-        }
     })
 
 
 router.route("/user/:id")
     .get(checkToken , async (req,res) => {
 
-        try {
+        const user = new UserController(req.params);
 
-            const token = await verifyToken(req.token);
+        const data = await user.show();
 
-            const user = new UserController(req.params);
-
-            const data = await user.show();
-
-            res.status(data.status).json({
-
-                status   : data.status,
-
-                data : {
-                    id       : data.user.id,
-                    username : data.user.userName,
-                    fullname : data.user.fullName,
-                },
-
-                token
-            
-            });
-
-        } catch (error) {
-            res.status(403).json({
-                status : 403,
-                message : "Forbidden",
-                error 
-            });
-        }
+        res.status(data.status).json({
+            status   : data.status,
+            data : {
+                id       : data.user.id,
+                username : data.user.userName,
+                fullname : data.user.fullName,
+            },
+            access_token : req.access_token
+        
+        });
     });
 
 
@@ -91,27 +65,55 @@ router.route("/user/login")
 router.route("/user/edit")
     .put([checkToken,validateEdit],async (req,res)=>{
 
-        try {
+        const user = new UserController(req.body);
 
-            const token = await verifyToken(req.token);
+        const result = await user.edit();
 
-            const user = new UserController(req.body);
-
-            const result = await user.edit();
-
-            res.status(result.status).json({result , token});
-
-        } catch (error) {
-            console.log(error)
-
-            res.status(403).json({
-                status : 403,
-                message : "Forbidden",
-                error 
-            });
-        }
+        res.status(result.status).json({result , token : req.access_token});
 
     });
+
+
+router.route("/user/change-password")
+    .put([checkToken,validateChangePassword],async (req,res)=>{
+
+
+        const user = new UserController(req.body);
+
+        const result = await user.changePassword();
+
+        res.status(result.status).json({result , token : req.token});
+
+
+    });
+
+
+
+
+
+
+function validateChangePassword(req,res,next){
+
+    const schema = Joi.object({
+        id       : Joi.number().required(),
+        currentPassword : Joi.string()
+                            .label('Current Password')
+                            .required(),
+        newPassword     : Joi.string()
+                            .label('New Password')
+                            .required(),
+        confirmPassword : Joi.ref("newPassword")
+
+
+    }); 
+
+    const {error} = Joi.validate(req.body, schema);
+
+    if (error) return res.status(400).json({status : 400 , message : error.details[0].message});
+
+    next();
+}
+    
 
 
 function validateEdit(req,res,next){
