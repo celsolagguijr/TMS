@@ -1,18 +1,22 @@
-const express = require("express");
-const router = express.Router();
-const UserController = require("../controllers/UserController");
-const Joi = require("@hapi/joi");
-const {checkToken} = require('../functions/jwt');
-
+const express               = require("express");
+const router                = express.Router();
+const UserController        = require("../controllers/UserController");
+const Joi                   = require("@hapi/joi");
+const {checkToken}          = require('../functions/jwt');
+const { checkFileUpload }   = require("../middlewares/fileUploadMiddleware");
 
 router.route("/users")
     .get(checkToken , async (req,res) => {
 
-            const user = new UserController(req.params);
+        const user = new UserController(req.params);
 
-            const data = await user.showAll();
+        const data = await user.showAll();
 
-            res.status(data.status).json({ status : data.status, data : data.users, payload : req.payload });
+        res.status(data.status).json({ 
+                status : data.status, 
+                data : data.users, 
+                payload : req.payload 
+            });
 
     });
 
@@ -82,6 +86,16 @@ router.route("/user/change-password")
 
     });
 
+
+router.route("/user/change-profile-picture")
+    .put([checkToken,checkFileUpload] , async (req,res) => {
+
+        const user = new UserController({id : req.userid , profilePicture : req.fileUrl});
+          
+        const result = await user.updateProfilePicture();
+
+        res.status(result.status).json(result);
+    });
 
 
 

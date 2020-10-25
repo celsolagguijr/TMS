@@ -1,6 +1,6 @@
 const { User } = require('../models/index');
 const { generateAccessToken , generateRefrehToken } = require("../functions/jwt");
-const { hashPassword ,checkPassword} =require("../functions/bcrypt");
+const { hashPassword ,checkPassword} = require("../functions/bcrypt");
 
 
 class UserController {
@@ -167,6 +167,30 @@ class UserController {
         } catch (error) {
             return { status : 400 , error }
         }
+    }
+
+    async updateProfilePicture(){
+
+        try {
+
+            const result = await User.update(
+                { 
+                    profilePicture : this.data.profilePicture,
+                }, 
+                {
+                    where: {
+                        id : this.data.id
+                    }
+                });
+
+            
+            return { status : 200 , message : "Profile successfully Changed!" }
+
+            
+        } catch (error) {
+            return { status : 400 , error }
+        }
+
     }
 
 }

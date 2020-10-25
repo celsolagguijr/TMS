@@ -25,7 +25,11 @@ const { hashPassword } = require("../functions/bcrypt");
       type : STRING,
       allowNull : false,
       minLenght : 8
-    }
+    },
+    profilePicture : {
+      type : STRING,
+      allowNull : true
+    },
   }, {
     sequelize,
     modelName: 'User',
