@@ -20,6 +20,8 @@ const bodyParser = require('body-parser');
 //userRouter
 const userRouter = require('./src/routers/UserRouter');
 
+//documentType Router
+const documentTypeRouter = require('./src/routers/DocumentTypeRouter');
 
 
 //file middleware
@@ -39,7 +41,8 @@ app.use(express.json());
 //user api
 app.use("/api/",userRouter);
 
-
+//document type
+app.use("/api/",documentTypeRouter);
 
 
 // console.log(connection.test());
