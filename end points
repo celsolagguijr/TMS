@@ -1,0 +1,21 @@
+
+User endpoints
+
+Sign up
+
+URL : http://localhost:3000/api/user/signup
+
+body : 
+
+userName : celsolaggui@gsis.com
+password : password1234
+confirmPassword : password1234
+fullName :  celso laggui jr
+
+headers : 
+
+Accepts  : application/json
+
+response :
+
+

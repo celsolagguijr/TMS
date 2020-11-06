@@ -77,4 +77,10 @@ checkToken = async (req,res,next) => {
 }
 
 
-module.exports = {generateAccessToken , checkToken , verifyAccessToken , verifyRefreshToken , generateRefrehToken};
+module.exports = { 
+                    generateAccessToken , 
+                    checkToken , 
+                    verifyAccessToken , 
+                    verifyRefreshToken , 
+                    generateRefrehToken
+                };

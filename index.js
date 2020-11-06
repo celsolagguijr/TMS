@@ -23,6 +23,9 @@ const userRouter = require('./src/routers/UserRouter');
 //documentType Router
 const documentTypeRouter = require('./src/routers/DocumentTypeRouter');
 
+//Document Router
+const documentRouter = require('./src/routers/DocumentRouter');
+
 
 //file middleware
 app.use(fileMiddleware);
@@ -43,6 +46,9 @@ app.use("/api/",userRouter);
 
 //document type
 app.use("/api/",documentTypeRouter);
+
+//document type
+app.use("/api/",documentRouter);
 
 
 // console.log(connection.test());

@@ -2,10 +2,17 @@
 const { Model, DataTypes , sequelize } = require('./sequelize');
 
   class Document extends Model {};
+
+
+  const {STRING,INTEGER} = DataTypes;
+
+
   Document.init({
-    title: DataTypes.STRING,
-    description: DataTypes.STRING,
-  }, {
+    title: STRING,
+    description: STRING,
+    documentTypeId : INTEGER,
+    userId : INTEGER
+  },{
     sequelize,
     modelName: 'Document',
   });
