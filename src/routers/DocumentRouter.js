@@ -53,6 +53,18 @@ router.route("/document")
         
     });
 
+router.route("/document-transactions")
+    .get([checkToken], async (req,res) => {
+
+        const document = new DocumentController({
+            documentId : 1,
+        });
+
+        const data = await document.getDocumentTransaction();
+
+        res.status(data.status).json({data : data.result});
+        
+    });
 
 function validateCreateDocument(req,res,next) {
 

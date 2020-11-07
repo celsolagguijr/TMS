@@ -68,7 +68,8 @@ class UserController {
         const user = await User.findOne({
             attributes : ['id','userName', 'password','fullName'],
             where      : { userName : this.data.userName }
-        })
+        });
+
 
         if(!user){
             return { status :400  , message : "Incorrect Credentials"};
@@ -192,6 +193,8 @@ class UserController {
         }
 
     }
+
+
 
 }
 

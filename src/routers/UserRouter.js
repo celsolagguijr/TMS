@@ -54,6 +54,8 @@ router.route("/user/signup")
 router.route("/user/login")
       .post(validateLogin,async (req,res) => {
 
+        console.log(req.body)
+
         const user = new UserController(req.body);
 
         const result = await user.authenticate();

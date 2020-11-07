@@ -10,14 +10,18 @@ const User         = require("./user");
 //Document
 Document.belongsTo(User);
 Document.belongsTo(DocumentType);
-Document.belongsToMany(User,{through : Transaction});
 
 //Document Type
 DocumentType.hasOne(Document,{ onDelete: 'RESTRICT' });
 
 //User
 User.hasMany(Document,{ onDelete: 'RESTRICT' });
-User.belongsToMany(Document,{through : Transaction});
+
+User.hasMany(Transaction);
+Transaction.belongsTo(User);
+
+Document.hasMany(Transaction);
+Transaction.belongsTo(Document);
 
 
 module.exports = {

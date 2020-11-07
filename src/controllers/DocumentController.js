@@ -1,4 +1,5 @@
-const { Document , DocumentType ,  User} = require('../models/index');
+const { Document , DocumentType ,  User , Transaction} = require('../models/index');
+const { Op } = require("sequelize");
 
 class DocumentController {
 
@@ -78,7 +79,38 @@ class DocumentController {
 
     }
 
+    async getDocumentTransaction(){
 
+        const result = await Document.findOne({
+            attributes : ["id","title","description","createdAt"],
+            where : { 
+                id : this.data.documentId 
+            },
+            include :[
+                {
+                    model : DocumentType , 
+                    attributes : ['description']
+                },
+                {
+                    model : User,
+                    attributes : ["fullName","userName","profilePicture"]
+                },
+                {
+                    model : Transaction,
+                    attributes : ["transactionStatus","remarks","createdAt"],
+                    order : [ "id" , "DESC" ],
+                    include : [
+                        {                        
+                            model : User,
+                            attributes : ["fullName","userName","profilePicture"]
+                        }
+                    ]
+                }
+            ]
+        });
+
+        return { status : 200 ,  result }
+    }
 
 }
 
